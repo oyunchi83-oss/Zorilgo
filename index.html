@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Зорилгын Замнал</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --surface: #12121a;
+  --surface2: #1a1a26;
+  --border: #2a2a3e;
+  --accent: #c8a96e;
+  --accent2: #7c6fff;
+  --danger: #ff4d6d;
+  --success: #4dffb4;
+  --text: #e8e4d8;
+  --text-muted: #7a7a9a;
+  --glow: rgba(200,169,110,0.15);
+  --rank-color: #c8a96e;
+}
+/* RANK THEMES */
+body.rank-1 { --rank-color: #9ca3af; --accent: #9ca3af; --glow: rgba(156,163,175,0.12); }
+body.rank-2 { --rank-color: #60a5fa; --accent: #60a5fa; --glow: rgba(96,165,250,0.12); }
+body.rank-3 { --rank-color: #34d399; --accent: #34d399; --glow: rgba(52,211,153,0.12); }
+body.rank-4 { --rank-color: #f59e0b; --accent: #f59e0b; --glow: rgba(245,158,11,0.12); }
+body.rank-5 { --rank-color: #a78bfa; --accent: #a78bfa; --glow: rgba(167,139,250,0.15); }
+body.rank-6 { --rank-color: #f97316; --accent: #f97316; --glow: rgba(249,115,22,0.15); }
+body.rank-7 { --rank-color: #ec4899; --accent: #ec4899; --glow: rgba(236,72,153,0.15); }
+body.rank-8 { --rank-color: #06b6d4; --accent: #06b6d4; --glow: rgba(6,182,212,0.15); }
+body.rank-9 { --rank-color: #c8a96e; --accent: #c8a96e; --glow: rgba(200,169,110,0.2); }
+body.rank-10 { --rank-color: #fff; --accent: #fff; --bg: #050508; --glow: rgba(255,255,255,0.12); }
+
+*{margin:0;padding:0;box-sizing:border-box}
+body {
+  font-family: 'Crimson Pro', serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: all 0.8s ease;
+}
+/* ANIMATED BG */
+body::before {
+  content:'';
+  position:fixed;
+  inset:0;
+  background: radial-gradient(ellipse 80% 50% at 50% -10%, var(--glow), transparent),
+              radial-gradient(ellipse 40% 30% at 80% 80%, rgba(124,111,255,0.06), transparent);
+  pointer-events:none;
+  z-index:0;
+  transition: all 0.8s ease;
+}
+
+/* QUOTE BANNER */
+#quote-bar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(10,10,15,0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 24px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-style: italic;
+  letter-spacing: 0.03em;
+  transition: opacity 0.5s;
+}
+#quote-bar strong { color: var(--rank-color); font-style: normal; font-weight: 600; }
+
+/* MAIN LAYOUT */
+.container { max-width: 980px; margin: 0 auto; padding: 80px 20px 40px; position: relative; z-index:1; }
+
+/* HEADER */
+header { text-align: center; margin-bottom: 40px; }
+.logo { font-family: 'Cinzel Decorative', serif; font-size: 2.2rem; color: var(--rank-color); text-shadow: 0 0 40px var(--glow); letter-spacing: 0.05em; transition: color 0.8s; }
+.tagline { color: var(--text-muted); font-size: 0.95rem; margin-top: 4px; }
+
+/* RANK CARD */
+.rank-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 28px 32px;
+  margin-bottom: 28px;
+  position: relative;
+  overflow: hidden;
+}
+.rank-card::before {
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;height:3px;
+  background: linear-gradient(90deg, transparent, var(--rank-color), transparent);
+  transition: all 0.8s;
+}
+.rank-top { display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
+.rank-emblem {
+  width:72px;height:72px;border-radius:50%;
+  background: radial-gradient(circle, var(--glow), transparent);
+  border: 2px solid var(--rank-color);
+  display:flex;align-items:center;justify-content:center;
+  font-size:2rem;
+  box-shadow: 0 0 20px var(--glow);
+  transition: all 0.8s;
+  flex-shrink:0;
+}
+.rank-info h2 { font-family:'Cinzel Decorative',serif; font-size:1.4rem; color:var(--rank-color); transition:color 0.8s; }
+.rank-info .points { font-family:'Space Mono',monospace; font-size:2rem; color:var(--text); }
+.rank-info .points span { font-size:1rem; color:var(--text-muted); }
+.rank-info .streak { margin-top:4px; font-size:0.9rem; color:var(--text-muted); }
+.rank-info .streak .fire { font-size:1.1rem; }
+
+.progress-section { margin-top:20px; }
+.progress-label { display:flex; justify-content:space-between; font-size:0.82rem; color:var(--text-muted); margin-bottom:8px; font-family:'Space Mono',monospace; }
+.progress-bar {
+  height:10px;border-radius:99px;
+  background: var(--surface2);
+  overflow:hidden;
+  position:relative;
+}
+.progress-fill {
+  height:100%;
+  background: linear-gradient(90deg, var(--rank-color), var(--accent2));
+  border-radius:99px;
+  transition: width 1s cubic-bezier(.4,0,.2,1);
+  position:relative;
+}
+.progress-fill::after {
+  content:'';
+  position:absolute;right:0;top:0;bottom:0;width:20px;
+  background: rgba(255,255,255,0.3);
+  border-radius:99px;
+  animation: shimmer 1.5s infinite;
+}
+@keyframes shimmer { 0%,100%{opacity:0} 50%{opacity:1} }
+
+/* NAV TABS */
+.nav-tabs {
+  display:flex;gap:4px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:6px;
+  margin-bottom:24px;
+  flex-wrap:wrap;
+}
+.nav-tab {
+  flex:1;min-width:80px;
+  padding:10px 12px;
+  border-radius:10px;
+  border:none;
+  background:transparent;
+  color:var(--text-muted);
+  cursor:pointer;
+  font-family:'Crimson Pro',serif;
+  font-size:0.95rem;
+  transition:all 0.2s;
+  text-align:center;
+}
+.nav-tab:hover { color:var(--text); background:var(--surface2); }
+.nav-tab.active { background:var(--rank-color); color:#0a0a0f; font-weight:600; }
+
+/* SECTIONS */
+.section { display:none; animation: fadeUp 0.4s ease; }
+.section.active { display:block; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+/* ADD GOAL */
+.add-goal-form {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:28px;
+  margin-bottom:28px;
+}
+.add-goal-form h3 { font-family:'Cinzel Decorative',serif; font-size:1rem; color:var(--rank-color); margin-bottom:20px; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+.form-row.full { grid-template-columns:1fr; }
+.form-group { display:flex; flex-direction:column; gap:6px; }
+.form-group label { font-size:0.8rem; color:var(--text-muted); font-family:'Space Mono',monospace; letter-spacing:0.05em; }
+.form-group input, .form-group select, .form-group textarea {
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:10px 14px;
+  color:var(--text);
+  font-family:'Crimson Pro',serif;
+  font-size:1rem;
+  outline:none;
+  transition:border-color 0.2s;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  border-color: var(--rank-color);
+}
+.form-group textarea { resize:none; height:80px; }
+.fear-toggle { display:flex;align-items:center;gap:8px; margin-bottom:16px; }
+.fear-toggle input[type=checkbox] { width:18px;height:18px;accent-color:var(--danger); }
+.fear-toggle label { font-size:0.9rem; color:var(--danger); cursor:pointer; }
+.btn-add {
+  width:100%;
+  padding:14px;
+  border-radius:12px;
+  border:none;
+  background: linear-gradient(135deg, var(--rank-color), var(--accent2));
+  color:#0a0a0f;
+  font-family:'Cinzel Decorative',serif;
+  font-size:0.9rem;
+  cursor:pointer;
+  transition:all 0.2s;
+  font-weight:700;
+}
+.btn-add:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,0.4); }
+
+/* GOAL CARDS */
+.goals-list { display:flex;flex-direction:column;gap:14px; }
+.goal-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:20px 22px;
+  position:relative;
+  overflow:hidden;
+  transition:all 0.3s;
+}
+.goal-card:hover { border-color:var(--rank-color); transform:translateY(-2px); box-shadow:0 8px 32px rgba(0,0,0,0.3); }
+.goal-card.fear-goal { border-left:3px solid var(--danger); }
+.goal-card.fear-goal::after { content:'😨 Айдас'; position:absolute;top:12px;right:12px;font-size:0.7rem;color:var(--danger);background:rgba(255,77,109,0.1);padding:3px 8px;border-radius:99px; }
+.goal-card.overdue { border-left:3px solid var(--danger); }
+.goal-card-top { display:flex;align-items:flex-start;justify-content:space-between;gap:12px; }
+.goal-title { font-size:1.1rem;color:var(--text);font-weight:600; }
+.goal-meta { display:flex;gap:8px;flex-wrap:wrap;margin-top:6px; }
+.badge-pill {
+  font-size:0.72rem;font-family:'Space Mono',monospace;
+  padding:3px 9px;border-radius:99px;
+  border:1px solid;
+}
+.pill-easy { color:#4dffb4;border-color:#4dffb4;background:rgba(77,255,180,0.08); }
+.pill-medium { color:#f59e0b;border-color:#f59e0b;background:rgba(245,158,11,0.08); }
+.pill-hard { color:#f97316;border-color:#f97316;background:rgba(249,115,22,0.08); }
+.pill-extreme { color:var(--danger);border-color:var(--danger);background:rgba(255,77,109,0.08); }
+.pill-points { color:var(--rank-color);border-color:var(--rank-color);background:var(--glow); }
+.pill-date { color:var(--text-muted);border-color:var(--border); }
+.pill-overdue { color:var(--danger);border-color:var(--danger);animation:pulse 1.5s infinite; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.5} }
+.pill-bonus { color:#4dffb4;border-color:#4dffb4;background:rgba(77,255,180,0.08); }
+
+.goal-steps { margin-top:12px;display:flex;flex-direction:column;gap:6px; }
+.goal-step {
+  display:flex;align-items:center;gap:8px;
+  font-size:0.88rem;color:var(--text-muted);
+  padding:6px 10px;
+  background:var(--surface2);
+  border-radius:8px;
+}
+.goal-step input[type=checkbox] { accent-color:var(--rank-color);width:14px;height:14px;flex-shrink:0; }
+.goal-step.done { text-decoration:line-through;opacity:0.5; }
+
+.goal-actions { display:flex;gap:8px;margin-top:14px;flex-wrap:wrap; }
+.btn-done {
+  padding:8px 18px;border-radius:10px;border:none;
+  background: linear-gradient(135deg, var(--rank-color), var(--accent2));
+  color:#0a0a0f;font-family:'Space Mono',monospace;font-size:0.8rem;
+  cursor:pointer;font-weight:700;transition:all 0.2s;
+}
+.btn-done:hover { transform:scale(1.05); }
+.btn-delete {
+  padding:8px 14px;border-radius:10px;border:1px solid var(--border);
+  background:transparent;color:var(--text-muted);font-size:0.8rem;
+  cursor:pointer;transition:all 0.2s;font-family:'Space Mono',monospace;
+}
+.btn-delete:hover { border-color:var(--danger);color:var(--danger); }
+
+/* HISTORY */
+.history-list { display:flex;flex-direction:column;gap:10px; }
+.history-item {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:16px 20px;
+}
+.history-top { display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px; }
+.history-title { font-weight:600;color:var(--text); }
+.history-date { font-family:'Space Mono',monospace;font-size:0.78rem;color:var(--text-muted); }
+.history-reflection { margin-top:8px;font-size:0.88rem;color:var(--text-muted);font-style:italic;border-left:2px solid var(--border);padding-left:10px; }
+.history-tags { display:flex;gap:6px;margin-top:8px;flex-wrap:wrap; }
+
+/* BADGES */
+.badges-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px; }
+.badge-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:20px;
+  text-align:center;
+  transition:all 0.3s;
+  position:relative;
+  overflow:hidden;
+}
+.badge-card.earned { border-color:var(--rank-color); }
+.badge-card.earned::before { content:'';position:absolute;inset:0;background:var(--glow);pointer-events:none; }
+.badge-card:not(.earned) { opacity:0.4;filter:grayscale(1); }
+.badge-icon { font-size:2.2rem;display:block;margin-bottom:10px; }
+.badge-name { font-size:0.85rem;font-weight:600;color:var(--text); }
+.badge-desc { font-size:0.75rem;color:var(--text-muted);margin-top:4px; }
+
+/* STORE */
+.store-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px; }
+.store-item {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:22px;
+  text-align:center;
+  transition:all 0.3s;
+}
+.store-item:hover { transform:translateY(-4px);border-color:var(--rank-color); }
+.store-emoji { font-size:2.5rem;display:block;margin-bottom:12px; }
+.store-name { font-size:1rem;font-weight:600;color:var(--text);margin-bottom:4px; }
+.store-desc { font-size:0.82rem;color:var(--text-muted);margin-bottom:14px; }
+.store-price { font-family:'Space Mono',monospace;font-size:0.9rem;color:var(--rank-color);margin-bottom:12px; }
+.btn-buy {
+  padding:8px 20px;border-radius:10px;border:1px solid var(--rank-color);
+  background:transparent;color:var(--rank-color);font-family:'Space Mono',monospace;
+  font-size:0.8rem;cursor:pointer;transition:all 0.2s;width:100%;
+}
+.btn-buy:hover:not(:disabled) { background:var(--rank-color);color:#0a0a0f; }
+.btn-buy:disabled { opacity:0.35;cursor:not-allowed; }
+
+/* RANKS PAGE */
+.ranks-grid { display:grid;gap:10px; }
+.rank-row {
+  display:flex;align-items:center;gap:14px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:16px 20px;
+  transition:all 0.3s;
+}
+.rank-row.current { border-color:var(--rank-color); background:var(--glow); }
+.rank-row.achieved { opacity:0.6; }
+.rank-row-icon { font-size:1.8rem;width:44px;text-align:center;flex-shrink:0; }
+.rank-row-info { flex:1; }
+.rank-row-name { font-family:'Cinzel Decorative',serif;font-size:0.9rem; }
+.rank-row-pts { font-family:'Space Mono',monospace;font-size:0.78rem;color:var(--text-muted); }
+
+/* MESSAGE SECTION */
+.messages-list { display:flex;flex-direction:column;gap:12px; }
+.message-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-left:3px solid var(--rank-color);
+  border-radius:14px;
+  padding:18px 20px;
+}
+.message-rank { font-family:'Space Mono',monospace;font-size:0.75rem;color:var(--rank-color);margin-bottom:6px; }
+.message-text { font-size:1rem;font-style:italic;color:var(--text); }
+
+/* MODAL */
+.modal-overlay {
+  position:fixed;inset:0;z-index:1000;
+  background:rgba(0,0,0,0.75);
+  backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+  animation:fadeIn 0.2s;
+}
+@keyframes fadeIn { from{opacity:0}to{opacity:1} }
+.modal {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:32px;
+  max-width:480px;width:100%;
+  position:relative;
+}
+.modal h3 { font-family:'Cinzel Decorative',serif;font-size:1rem;color:var(--rank-color);margin-bottom:16px; }
+.modal textarea {
+  width:100%;
+  background:var(--surface2);border:1px solid var(--border);border-radius:10px;
+  padding:12px;color:var(--text);font-family:'Crimson Pro',serif;font-size:1rem;
+  resize:none;height:100px;outline:none;
+}
+.modal textarea:focus { border-color:var(--rank-color); }
+.modal-actions { display:flex;gap:10px;margin-top:16px; }
+.btn-primary {
+  flex:1;padding:12px;border-radius:10px;border:none;
+  background:linear-gradient(135deg,var(--rank-color),var(--accent2));
+  color:#0a0a0f;font-family:'Space Mono',monospace;font-size:0.85rem;
+  cursor:pointer;font-weight:700;transition:all 0.2s;
+}
+.btn-secondary {
+  flex:1;padding:12px;border-radius:10px;border:1px solid var(--border);
+  background:transparent;color:var(--text-muted);font-family:'Space Mono',monospace;
+  font-size:0.85rem;cursor:pointer;transition:all 0.2s;
+}
+.btn-secondary:hover { border-color:var(--text-muted);color:var(--text); }
+
+/* RANK UP MODAL */
+.rankup-modal { text-align:center; }
+.rankup-modal .big-icon { font-size:5rem;display:block;margin-bottom:16px;animation:bounceIn 0.6s; }
+@keyframes bounceIn { 0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)} }
+.rankup-modal h2 { font-family:'Cinzel Decorative',serif;font-size:1.4rem;color:var(--rank-color);margin-bottom:8px; }
+.rankup-modal p { color:var(--text-muted);font-size:0.95rem; }
+
+/* CONFETTI */
+.confetti-container { position:fixed;inset:0;pointer-events:none;z-index:2000;overflow:hidden; }
+.confetti-piece {
+  position:absolute;width:10px;height:10px;
+  animation: confettiFall linear forwards;
+}
+@keyframes confettiFall {
+  0% { transform: translateY(-10px) rotate(0deg); opacity:1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity:0; }
+}
+
+/* TOAST */
+.toast {
+  position:fixed;bottom:24px;right:24px;z-index:3000;
+  background:var(--surface);
+  border:1px solid var(--rank-color);
+  border-radius:14px;
+  padding:14px 20px;
+  font-family:'Space Mono',monospace;
+  font-size:0.85rem;
+  color:var(--text);
+  animation: slideIn 0.3s ease, slideOut 0.3s ease 2.7s forwards;
+  max-width:300px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.5);
+}
+@keyframes slideIn { from{transform:translateX(120%);opacity:0} to{transform:translateX(0);opacity:1} }
+@keyframes slideOut { from{opacity:1} to{opacity:0;transform:translateX(120%)} }
+
+/* EMPTY STATE */
+.empty-state { text-align:center;padding:60px 20px;color:var(--text-muted); }
+.empty-state .icon { font-size:3rem;display:block;margin-bottom:12px;opacity:0.4; }
+.empty-state p { font-size:0.95rem; }
+
+/* RESPONSIVE */
+@media(max-width:600px) {
+  .logo { font-size:1.5rem; }
+  .form-row { grid-template-columns:1fr; }
+  .rank-top { flex-direction:column;align-items:flex-start; }
+  .points { font-size:1.5rem !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- QUOTE BAR -->
+<div id="quote-bar"><em id="quote-text">Ачааллаж байна...</em> — <strong id="quote-author"></strong></div>
+
+<!-- CONFETTI CONTAINER -->
+<div class="confetti-container" id="confetti"></div>
+
+<div class="container">
+  <header>
+    <div class="logo">⚔️ Зорилгын Замнал</div>
+    <div class="tagline">Өөрийгөө байлдан дагуул</div>
+  </header>
+
+  <!-- RANK CARD -->
+  <div class="rank-card" id="rankCard">
+    <div class="rank-top">
+      <div class="rank-emblem" id="rankEmblem">🌱</div>
+      <div class="rank-info">
+        <h2 id="rankName">Эхлэн суралцагч</h2>
+        <div class="points"><span id="totalPoints">0</span> <span>оноо</span></div>
+        <div class="streak">
+          <span class="fire" id="streakFire">🔥</span>
+          <span id="streakText">0 өдрийн streak</span>
+          <span id="streakBadge" style="margin-left:8px;display:none">🔥🔥🔥 Халуун горим!</span>
+        </div>
+      </div>
+    </div>
+    <div class="progress-section">
+      <div class="progress-label">
+        <span id="progressLabel">Дараагийн цол: Хичээнгүй сурагч</span>
+        <span id="progressPts">0 / 100</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <!-- NAV TABS -->
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showTab('goals')">🎯 Зорилго</button>
+    <button class="nav-tab" onclick="showTab('history')">📜 Түүх</button>
+    <button class="nav-tab" onclick="showTab('badges')">🏅 Тэмдэг</button>
+    <button class="nav-tab" onclick="showTab('store')">🛒 Дэлгүүр</button>
+    <button class="nav-tab" onclick="showTab('ranks')">👑 Цолнууд</button>
+    <button class="nav-tab" onclick="showTab('messages')">💌 Зурвас</button>
+  </div>
+
+  <!-- GOALS SECTION -->
+  <div class="section active" id="sec-goals">
+    <div class="add-goal-form">
+      <h3>✦ Шинэ Зорилго Нэмэх</h3>
+      <div class="form-row full">
+        <div class="form-group">
+          <label>ЗОРИЛГЫН НЭРЛЭЛ</label>
+          <input type="text" id="goalTitle" placeholder="Жишээ: Долоо хоногт 3 удаа дасгал хийх">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>ХҮНДИЙН ТҮВШИн</label>
+          <select id="goalDiff">
+            <option value="easy">Хялбар (+30 оноо)</option>
+            <option value="medium" selected>Дунд (+70 оноо)</option>
+            <option value="hard">Хэцүү (+120 оноо)</option>
+            <option value="extreme">Маш хэцүү (+200 оноо)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>ДУУСГАХ ОГНОО</label>
+          <input type="date" id="goalDeadline">
+        </div>
+      </div>
+      <div class="form-row full">
+        <div class="form-group">
+          <label>ЖИЖИГ АЛХМУУД (таслалаар тусгаарла)</label>
+          <textarea id="goalSteps" placeholder="Жишээ: Хувцас өмс, Гараараа дасгал хий, 20 минут гүй"></textarea>
+        </div>
+      </div>
+      <div class="fear-toggle">
+        <input type="checkbox" id="goalFear">
+        <label for="goalFear">😨 Айдсаас зугтааж байгаа зорилго (Бонус оноо авна!)</label>
+      </div>
+      <button class="btn-add" onclick="addGoal()">+ ЗОРИЛГО НЭМЭХ</button>
+    </div>
+    <div class="goals-list" id="goalsList"></div>
+  </div>
+
+  <!-- HISTORY SECTION -->
+  <div class="section" id="sec-history">
+    <div class="history-list" id="historyList"></div>
+  </div>
+
+  <!-- BADGES SECTION -->
+  <div class="section" id="sec-badges">
+    <div class="badges-grid" id="badgesGrid"></div>
+  </div>
+
+  <!-- STORE SECTION -->
+  <div class="section" id="sec-store">
+    <div style="text-align:center;margin-bottom:20px;font-family:'Space Mono',monospace;font-size:0.85rem;color:var(--text-muted)">
+      Таны баланс: <span id="storeBalance" style="color:var(--rank-color);font-size:1rem;">0</span> оноо
+    </div>
+    <div class="store-grid" id="storeGrid"></div>
+  </div>
+
+  <!-- RANKS SECTION -->
+  <div class="section" id="sec-ranks">
+    <div class="ranks-grid" id="ranksGrid"></div>
+  </div>
+
+  <!-- MESSAGES SECTION -->
+  <div class="section" id="sec-messages">
+    <div style="text-align:center;margin-bottom:20px;">
+      <button class="btn-add" style="max-width:300px;margin:0 auto;display:block" onclick="openMessageModal()">
+        + Ирээдүйн өөртөө зурвас бичих
+      </button>
+    </div>
+    <div class="messages-list" id="messagesList"></div>
+  </div>
+</div>
+
+<!-- REFLECTION MODAL -->
+<div class="modal-overlay" id="reflectionModal" style="display:none">
+  <div class="modal">
+    <h3>🌟 Зорилго биелүүлсэн!</h3>
+    <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:14px">Энэ зорилгыг биелүүлэхэд юу сурсан бэ? Юу хэцүү байсан бэ?</p>
+    <textarea id="reflectionText" placeholder="Нэг өгүүлбэр ч болно..."></textarea>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeReflection()">Алгасах</button>
+      <button class="btn-primary" onclick="saveReflection()">Хадгалах</button>
+    </div>
+  </div>
+</div>
+
+<!-- RANKUP MODAL -->
+<div class="modal-overlay" id="rankupModal" style="display:none">
+  <div class="modal rankup-modal">
+    <span class="big-icon" id="rankupIcon">🏆</span>
+    <h2 id="rankupTitle">Цол ахив!</h2>
+    <p id="rankupDesc">Та шинэ цолонд хүрлээ!</p>
+    <div style="margin-top:20px">
+      <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:10px">Ирээдүйн өөртөө нэг зурвас бич:</p>
+      <textarea id="rankupMessage" placeholder="Хэдэн сарын дараа энийг уншина шүү дээ..." style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px;color:var(--text);font-family:'Crimson Pro',serif;font-size:1rem;resize:none;height:80px;outline:none;"></textarea>
+    </div>
+    <div class="modal-actions" style="margin-top:14px">
+      <button class="btn-primary" onclick="closeRankup()">Үргэлжлүүлэх 🚀</button>
+    </div>
+  </div>
+</div>
+
+<!-- MESSAGE MODAL -->
+<div class="modal-overlay" id="messageModal" style="display:none">
+  <div class="modal">
+    <h3>💌 Ирээдүйн Өөртөө Зурвас</h3>
+    <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:14px">Энэ зурвасыг ирэх цолонд хүрэхдээ уншина...</p>
+    <textarea id="messageText" placeholder="Хайрт ирээдүйн миний би..."></textarea>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeMessageModal()">Болих</button>
+      <button class="btn-primary" onclick="saveMessage()">Хадгалах</button>
+    </div>
+  </div>
+</div>
+
+<audio id="coinSound" src="https://cdn.freesound.org/previews/341/341695_5858296-lq.mp3" preload="auto"></audio>
+
+<script>
+// ============ DATA ============
+const RANKS = [
+  { name:'Эхлэн суралцагч', pts:0,    icon:'🌱', theme:1 },
+  { name:'Хичээнгүй сурагч', pts:100,  icon:'📖', theme:2 },
+  { name:'Замчлагч',          pts:300,  icon:'🧭', theme:3 },
+  { name:'Тэмцэгч',           pts:600,  icon:'⚔️', theme:4 },
+  { name:'Мэргэн',            pts:1000, icon:'🎯', theme:5 },
+  { name:'Дайчин',            pts:1500, icon:'🛡️', theme:6 },
+  { name:'Мастер',            pts:2100, icon:'🔮', theme:7 },
+  { name:'Их Багш',           pts:2800, icon:'📿', theme:8 },
+  { name:'Домог',             pts:3600, icon:'🌟', theme:9 },
+  { name:'Төгс Гэгээрсэн',   pts:4500, icon:'☀️', theme:10 },
+];
+
+const DIFF_MAP = { easy:{label:'Хялбар',pts:30,cls:'pill-easy'}, medium:{label:'Дунд',pts:70,cls:'pill-medium'}, hard:{label:'Хэцүү',pts:120,cls:'pill-hard'}, extreme:{label:'Маш хэцүү',pts:200,cls:'pill-extreme'} };
+
+const ALL_BADGES = [
+  { id:'first_goal',  icon:'🎯', name:'Анхны алхам',    desc:'Анхны зорилго нэмсэн' },
+  { id:'first_done',  icon:'✅', name:'Анхны ялалт',    desc:'Анхны зорилгоо дуусгасан' },
+  { id:'fear_slayer', icon:'😤', name:'Айдсыг Ялагч',   desc:'Айдсаас зугтаж байсан зорилго биелүүлсэн' },
+  { id:'streak_3',    icon:'🔥', name:'Халуун гурав',   desc:'3 өдрийн streak' },
+  { id:'streak_7',    icon:'🔥', name:'Долоо хоног',    desc:'7 өдрийн streak' },
+  { id:'streak_30',   icon:'🌋', name:'Тасралтгүй сар', desc:'30 өдрийн streak' },
+  { id:'extreme_done',icon:'💎', name:'Гялалзагч',      desc:'Маш хэцүү зорилго дуусгасан' },
+  { id:'5_goals',     icon:'🌟', name:'Тав дахь ялалт', desc:'5 зорилго биелүүлсэн' },
+  { id:'10_goals',    icon:'🏆', name:'Арав дахь',      desc:'10 зорилго биелүүлсэн' },
+  { id:'bonus_pts',   icon:'⚡', name:'Хугацаанд',      desc:'Хугацааны дотор дуусгасан' },
+  { id:'rank_up',     icon:'👑', name:'Цол ахив',       desc:'Анхны цол ахисан' },
+  { id:'reflection',  icon:'📝', name:'Мэргэн бичигч',  desc:'5 эргэцүүлэл бичсэн' },
+];
+
+const STORE_ITEMS = [
+  { id:'game',     emoji:'🎮', name:'Тоглоом',     desc:'1 цаг тоглоом тоглох эрх',      price:500 },
+  { id:'sweet',    emoji:'🍰', name:'Амттан',       desc:'Дуртай амттанаа авах',           price:1000 },
+  { id:'rest',     emoji:'🛋️', name:'Бүрэн амралт', desc:'Амралтын өдөр кино үзэх',       price:5000 },
+  { id:'coffee',   emoji:'☕', name:'Дуртай кофе',  desc:'Нэг удаагийн дуртай кофе',       price:300 },
+  { id:'book',     emoji:'📚', name:'Шинэ ном',     desc:'Дуртай номоо авах',              price:800 },
+  { id:'walk',     emoji:'🚶', name:'Зугаалга',     desc:'1 цагийн чөлөөт зугаалга',       price:400 },
+];
+
+const QUOTES = [
+  { q:"Амжилт бол хэзээ ч тасрахгүйн үр дүн.", a:"Уинстон Черчилль" },
+  { q:"Хамгийн хэцүү алхам бол эхний алхам.", a:"Мари Кюри" },
+  { q:"Чи боломжгүй гэж бодох зүйлийг боломжтой болго.", a:"Элон Маск" },
+  { q:"Хэрэв мөрөөдлөө биелүүлэхэд хялбар санагдаж байвал, хангалттай том мөрөөддөггүй хэрэг.", a:"Элон Маск" },
+  { q:"Эхлэхийн тулд агуу байх шаардлагагүй. Гэхдээ агуй болохын тулд эхлэх шаардлагатай.", a:"Зиг Зиглар" },
+  { q:"Амьдрал бол тоглоом биш, харин тулааны талбар.", a:"Чингис хаан" },
+  { q:"Нэг л зорилготой хүн мянган хүнийг дагуулж чадна.", a:"Наполеон" },
+  { q:"Чиний хамгийн том дайсан бол чиний ирөөдүйн хойшлуулалт.", a:"Стив Жобс" },
+  { q:"Хэдийгээр удаан явсан ч зөв зам дээр явж байвал зорьсон газартаа хүрнэ.", a:"Конфуций" },
+  { q:"Амжилт бол аз биш, бэлтгэл юм.", a:"Луи Пастер" },
+  { q:"Өчигдрийнхөөсөө илүү сайн байхыг зорь.", a:"Дэвид Брэйдли" },
+];
+
+// ============ STATE ============
+let state = JSON.parse(localStorage.getItem('zorilog_state') || 'null') || {
+  points: 0,
+  goals: [],
+  history: [],
+  earnedBadges: [],
+  boughtItems: [],
+  streak: 0,
+  lastActiveDate: null,
+  messages: [],
+  totalDone: 0,
+  reflectionCount: 0,
+};
+let pendingGoalId = null;
+let pendingRankup = null;
+let currentRankIndex = getRankIndex(state.points);
+
+function save() { localStorage.setItem('zorilog_state', JSON.stringify(state)); }
+
+function getRankIndex(pts) {
+  let idx = 0;
+  for(let i=0;i<RANKS.length;i++) { if(pts >= RANKS[i].pts) idx = i; }
+  return idx;
+}
+
+// ============ STREAK ============
+function updateStreak() {
+  const today = new Date().toDateString();
+  if(state.lastActiveDate !== today) {
+    const yesterday = new Date(Date.now()-86400000).toDateString();
+    if(state.lastActiveDate === yesterday) { state.streak++; }
+    else if(state.lastActiveDate !== today) { state.streak = 1; }
+    state.lastActiveDate = today;
+    save();
+  }
+}
+
+function checkStreakBadges() {
+  if(state.streak >= 3) awardBadge('streak_3');
+  if(state.streak >= 7) awardBadge('streak_7');
+  if(state.streak >= 30) awardBadge('streak_30');
+}
+
+// ============ RENDER ============
+function renderAll() {
+  renderRankCard();
+  renderGoals();
+  renderHistory();
+  renderBadges();
+  renderStore();
+  renderRanks();
+  renderMessages();
+  applyRankTheme();
+}
+
+function renderRankCard() {
+  const ri = getRankIndex(state.points);
+  const rank = RANKS[ri];
+  const nextRank = RANKS[ri+1];
+  document.getElementById('rankEmblem').textContent = rank.icon;
+  document.getElementById('rankName').textContent = rank.name;
+  document.getElementById('totalPoints').textContent = state.points;
+  document.getElementById('streakText').textContent = `${state.streak} өдрийн streak`;
+  document.getElementById('streakBadge').style.display = state.streak >= 7 ? 'inline' : 'none';
+  if(nextRank) {
+    const pct = Math.min(100, ((state.points - rank.pts) / (nextRank.pts - rank.pts)) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = `Дараагийн цол: ${nextRank.name}`;
+    const needed = nextRank.pts - state.points;
+    document.getElementById('progressPts').textContent = `${state.points - rank.pts} / ${nextRank.pts - rank.pts} (+${needed} дутуу)`;
+  } else {
+    document.getElementById('progressFill').style.width = '100%';
+    document.getElementById('progressLabel').textContent = '🏆 Хамгийн дээд цол!';
+    document.getElementById('progressPts').textContent = `${state.points} оноо`;
+  }
+  document.getElementById('storeBalance').textContent = state.points;
+}
+
+function renderGoals() {
+  const el = document.getElementById('goalsList');
+  const today = new Date(); today.setHours(0,0,0,0);
+  if(!state.goals.length) {
+    el.innerHTML = `<div class="empty-state"><span class="icon">🎯</span><p>Зорилго байхгүй байна. Шинэ зорилго нэмцгээе!</p></div>`;
+    return;
+  }
+  el.innerHTML = state.goals.map(g => {
+    const d = DIFF_MAP[g.difficulty];
+    let dateHtml = '';
+    if(g.deadline) {
+      const dl = new Date(g.deadline); dl.setHours(0,0,0,0);
+      const isOverdue = dl < today;
+      const diff = Math.ceil((dl - today) / 86400000);
+      if(isOverdue) dateHtml = `<span class="badge-pill pill-overdue">⚠️ Хугацаа хэтэрсэн</span>`;
+      else if(diff === 0) dateHtml = `<span class="badge-pill pill-date">📅 Өнөөдөр!</span>`;
+      else dateHtml = `<span class="badge-pill pill-date">📅 ${diff} өдөр үлдсэн</span>`;
+    }
+    const stepsHtml = g.steps && g.steps.length ? `<div class="goal-steps">${g.steps.map((s,i)=>`
+      <div class="goal-step ${s.done?'done':''}">
+        <input type="checkbox" ${s.done?'checked':''} onchange="toggleStep('${g.id}',${i})">
+        <span>${s.text}</span>
+      </div>`).join('')}</div>` : '';
+    return `<div class="goal-card ${g.isFear?'fear-goal':''} ${g.deadline&&new Date(g.deadline)<today?'overdue':''}">
+      <div class="goal-card-top">
+        <div>
+          <div class="goal-title">${g.title}</div>
+          <div class="goal-meta">
+            <span class="badge-pill ${d.cls}">${d.label}</span>
+            <span class="badge-pill pill-points">+${d.pts}${g.isFear?' (+бонус)':''} оноо</span>
+            ${dateHtml}
+          </div>
+        </div>
+      </div>
+      ${stepsHtml}
+      <div class="goal-actions">
+        <button class="btn-done" onclick="completeGoal('${g.id}')">✓ Дуусгасан</button>
+        <button class="btn-delete" onclick="deleteGoal('${g.id}')">🗑 Устгах</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderHistory() {
+  const el = document.getElementById('historyList');
+  if(!state.history.length) {
+    el.innerHTML = `<div class="empty-state"><span class="icon">📜</span><p>Түүх хоосон байна. Зорилго биелүүлж эхэлцгээе!</p></div>`;
+    return;
+  }
+  el.innerHTML = [...state.history].reverse().map(h => {
+    const d = DIFF_MAP[h.difficulty];
+    return `<div class="history-item">
+      <div class="history-top">
+        <div class="history-title">${h.title}</div>
+        <div class="history-date">${new Date(h.completedAt).toLocaleDateString('mn-MN')}</div>
+      </div>
+      <div class="history-tags">
+        <span class="badge-pill ${d.cls}">${d.label}</span>
+        <span class="badge-pill pill-points">+${h.pointsEarned} оноо</span>
+        ${h.isFear?'<span class="badge-pill" style="color:var(--danger);border-color:var(--danger)">😤 Айдсыг Ялагч</span>':''}
+        ${h.bonusEarned?'<span class="badge-pill pill-bonus">⚡ +бонус</span>':''}
+      </div>
+      ${h.reflection?`<div class="history-reflection">"${h.reflection}"</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+function renderBadges() {
+  document.getElementById('badgesGrid').innerHTML = ALL_BADGES.map(b => `
+    <div class="badge-card ${state.earnedBadges.includes(b.id)?'earned':''}">
+      <span class="badge-icon">${b.icon}</span>
+      <div class="badge-name">${b.name}</div>
+      <div class="badge-desc">${b.desc}</div>
+    </div>`).join('');
+}
+
+function renderStore() {
+  document.getElementById('storeGrid').innerHTML = STORE_ITEMS.map(item => {
+    const bought = state.boughtItems.filter(x=>x.id===item.id).length;
+    const canBuy = state.points >= item.price;
+    return `<div class="store-item">
+      <span class="store-emoji">${item.emoji}</span>
+      <div class="store-name">${item.name}</div>
+      <div class="store-desc">${item.desc}</div>
+      <div class="store-price">🪙 ${item.price.toLocaleString()} оноо</div>
+      ${bought?`<div style="font-size:0.75rem;color:var(--success);margin-bottom:8px">✓ ${bought} удаа авсан</div>`:''}
+      <button class="btn-buy" onclick="buyItem('${item.id}')" ${canBuy?'':'disabled'}>
+        ${canBuy ? 'Авах' : 'Оноо хүрэхгүй'}
+      </button>
+    </div>`;
+  }).join('');
+}
+
+function renderRanks() {
+  const ri = getRankIndex(state.points);
+  document.getElementById('ranksGrid').innerHTML = RANKS.map((r,i) => `
+    <div class="rank-row ${i===ri?'current':''} ${i<ri?'achieved':''}">
+      <div class="rank-row-icon">${r.icon}</div>
+      <div class="rank-row-info">
+        <div class="rank-row-name" style="color:${i===ri?'var(--rank-color)':i<ri?'var(--success)':'var(--text)'}">${r.name} ${i===ri?'← Та эндээ':''} ${i<ri?'✓':''}</div>
+        <div class="rank-row-pts">${r.pts.toLocaleString()}+ оноо</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderMessages() {
+  const el = document.getElementById('messagesList');
+  if(!state.messages.length) {
+    el.innerHTML = `<div class="empty-state"><span class="icon">💌</span><p>Одоохондоо зурвас байхгүй. Ирээдүйн өөртөө юм бич!</p></div>`;
+    return;
+  }
+  el.innerHTML = state.messages.map(m => `
+    <div class="message-card">
+      <div class="message-rank">${m.rankName} цолонд хүрсэн үед</div>
+      <div class="message-text">${m.text}</div>
+      <div style="font-size:0.75rem;color:var(--text-muted);margin-top:6px">${new Date(m.date).toLocaleDateString('mn-MN')}</div>
+    </div>`).join('');
+}
+
+function applyRankTheme() {
+  const ri = getRankIndex(state.points);
+  document.body.className = `rank-${RANKS[ri].theme}`;
+}
+
+// ============ ACTIONS ============
+function addGoal() {
+  const title = document.getElementById('goalTitle').value.trim();
+  if(!title) { showToast('⚠️ Зорилгын нэр оруулна уу!'); return; }
+  const difficulty = document.getElementById('goalDiff').value;
+  const deadline = document.getElementById('goalDeadline').value;
+  const stepsRaw = document.getElementById('goalSteps').value.trim();
+  const isFear = document.getElementById('goalFear').checked;
+  const steps = stepsRaw ? stepsRaw.split(',').map(s=>({text:s.trim(),done:false})).filter(s=>s.text) : [];
+  const goal = { id: Date.now().toString(), title, difficulty, deadline, steps, isFear, createdAt: Date.now() };
+  state.goals.push(goal);
+  awardBadge('first_goal');
+  save(); renderGoals();
+  document.getElementById('goalTitle').value = '';
+  document.getElementById('goalSteps').value = '';
+  document.getElementById('goalDeadline').value = '';
+  document.getElementById('goalFear').checked = false;
+  showToast('✅ Зорилго нэмэгдлээ!');
+}
+
+function toggleStep(goalId, stepIdx) {
+  const g = state.goals.find(x=>x.id===goalId);
+  if(g) { g.steps[stepIdx].done = !g.steps[stepIdx].done; save(); renderGoals(); }
+}
+
+function deleteGoal(id) {
+  state.goals = state.goals.filter(g=>g.id!==id);
+  save(); renderGoals();
+  showToast('🗑 Зорилго устгагдлаа');
+}
+
+function completeGoal(id) {
+  pendingGoalId = id;
+  document.getElementById('reflectionText').value = '';
+  document.getElementById('reflectionModal').style.display = 'flex';
+}
+
+function closeReflection() {
+  document.getElementById('reflectionModal').style.display = 'none';
+  finishGoal(pendingGoalId, '');
+  pendingGoalId = null;
+}
+
+function saveReflection() {
+  const text = document.getElementById('reflectionText').value.trim();
+  document.getElementById('reflectionModal').style.display = 'none';
+  finishGoal(pendingGoalId, text);
+  pendingGoalId = null;
+}
+
+function finishGoal(id, reflection) {
+  const g = state.goals.find(x=>x.id===id);
+  if(!g) return;
+  const d = DIFF_MAP[g.difficulty];
+  const today = new Date(); today.setHours(0,0,0,0);
+  let pts = d.pts;
+  let bonusEarned = false;
+  if(g.isFear) { pts += 50; awardBadge('fear_slayer'); }
+  if(g.deadline) {
+    const dl = new Date(g.deadline); dl.setHours(0,0,0,0);
+    if(today <= dl) { pts += 20; bonusEarned = true; awardBadge('bonus_pts'); }
+  }
+  if(g.difficulty === 'extreme') {
+    awardBadge('extreme_done');
+    launchConfetti();
+  }
+  const prevRankIdx = getRankIndex(state.points);
+  state.points += pts;
+  state.totalDone++;
+  state.goals = state.goals.filter(x=>x.id!==id);
+  if(reflection) {
+    state.reflectionCount++;
+    if(state.reflectionCount >= 5) awardBadge('reflection');
+  }
+  updateStreak();
+  checkStreakBadges();
+  if(state.totalDone === 1) awardBadge('first_done');
+  if(state.totalDone === 5) awardBadge('5_goals');
+  if(state.totalDone === 10) awardBadge('10_goals');
+  state.history.push({ id, title:g.title, difficulty:g.difficulty, pointsEarned:pts, isFear:g.isFear, bonusEarned, reflection, completedAt: Date.now() });
+  playCoin();
+  const newRankIdx = getRankIndex(state.points);
+  save();
+  renderAll();
+  showToast(`🎉 +${pts} оноо! ${bonusEarned?'⚡ Бонус!':''}`);
+  if(newRankIdx > prevRankIdx) {
+    awardBadge('rank_up');
+    setTimeout(() => showRankup(newRankIdx), 1000);
+  }
+}
+
+function showRankup(ri) {
+  const rank = RANKS[ri];
+  document.getElementById('rankupIcon').textContent = rank.icon;
+  document.getElementById('rankupTitle').textContent = rank.name + ' болов!';
+  document.getElementById('rankupDesc').textContent = `${rank.pts} оноод хүрч "${rank.name}" цолыг авлаа!`;
+  document.getElementById('rankupMessage').value = '';
+  document.getElementById('rankupModal').style.display = 'flex';
+  pendingRankup = rank;
+  launchConfetti();
+}
+
+function closeRankup() {
+  const msg = document.getElementById('rankupMessage').value.trim();
+  if(msg && pendingRankup) {
+    state.messages.push({ rankName:pendingRankup.name, text:msg, date:Date.now() });
+    save(); renderMessages();
+  }
+  document.getElementById('rankupModal').style.display = 'none';
+  pendingRankup = null;
+}
+
+function openMessageModal() {
+  document.getElementById('messageText').value = '';
+  document.getElementById('messageModal').style.display = 'flex';
+}
+function closeMessageModal() { document.getElementById('messageModal').style.display = 'none'; }
+function saveMessage() {
+  const text = document.getElementById('messageText').value.trim();
+  if(!text) return;
+  const ri = getRankIndex(state.points);
+  state.messages.push({ rankName:RANKS[ri].name, text, date:Date.now() });
+  save(); renderMessages();
+  closeMessageModal();
+  showToast('💌 Зурвас хадгалагдлаа!');
+}
+
+function buyItem(id) {
+  const item = STORE_ITEMS.find(x=>x.id===id);
+  if(!item || state.points < item.price) return;
+  if(!confirm(`"${item.name}" авах уу?\n${item.price} оноо зарцуулагдана.`)) return;
+  state.points -= item.price;
+  state.boughtItems.push({ id, date:Date.now() });
+  save(); renderAll();
+  showToast(`${item.emoji} "${item.name}" авлаа! Амжилт хүртлээ!`);
+}
+
+function awardBadge(id) {
+  if(!state.earnedBadges.includes(id)) {
+    state.earnedBadges.push(id);
+    const b = ALL_BADGES.find(x=>x.id===id);
+    if(b) showToast(`🏅 Шинэ тэмдэг: ${b.name}!`);
+  }
+}
+
+// ============ UI ============
+function showTab(name) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('sec-'+name).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast'; t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(), 3200);
+}
+
+function playCoin() {
+  try {
+    const ctx = new (window.AudioContext||window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.setValueAtTime(800, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(1400, ctx.currentTime+0.05);
+    osc.frequency.exponentialRampToValueAtTime(600, ctx.currentTime+0.15);
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+0.3);
+    osc.start(); osc.stop(ctx.currentTime+0.3);
+  } catch(e){}
+}
+
+function launchConfetti() {
+  const c = document.getElementById('confetti');
+  c.innerHTML = '';
+  const colors = ['#c8a96e','#7c6fff','#4dffb4','#ff4d6d','#f59e0b','#fff'];
+  for(let i=0;i<80;i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    const color = colors[Math.floor(Math.random()*colors.length)];
+    p.style.cssText = `left:${Math.random()*100}%;background:${color};border-radius:${Math.random()>0.5?'50%':'2px'};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.5}s;`;
+    c.appendChild(p);
+  }
+  setTimeout(()=>c.innerHTML='', 5000);
+}
+
+// ============ QUOTES ============
+function rotateQuote() {
+  const q = QUOTES[Math.floor(Math.random()*QUOTES.length)];
+  document.getElementById('quote-text').textContent = q.q;
+  document.getElementById('quote-author').textContent = q.a;
+}
+rotateQuote();
+setInterval(rotateQuote, 12000);
+
+// ============ INIT ============
+updateStreak();
+renderAll();
+</script>
+</body>
+</html>
